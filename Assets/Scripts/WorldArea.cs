@@ -11,12 +11,16 @@ public class WorldArea : MonoBehaviour
     [SerializeField]
     Field fieldPrefab;
     [SerializeField]
+    GhostSensor ghostSensorPrefab;
+    [SerializeField]
     List<Ghost> ghosts;
     private Field[,] area;
+    public GhostSensor[,] ghostSensors;
     private bool[,] visited;
 
     public Vector2 AreaSize { get { return areaSize; } }
     public Field[,] Area { get { return area; } }
+    public GhostSensor[,] GhostSensors { get { return ghostSensors; } }
     public List<Ghost> Ghosts { get { return ghosts; } }
 
     public int numberOfFields;
@@ -25,7 +29,9 @@ public class WorldArea : MonoBehaviour
     void Start()
     {
         Field field;
+        GhostSensor ghostSensor;
         area = new Field[(int)areaSize.x, (int)areaSize.y];
+        ghostSensors = new GhostSensor[(int)areaSize.x, (int)areaSize.y];
         visited = new bool[(int)areaSize.x, (int)areaSize.y];
         for (int i = 0; i < (int)areaSize.x; i++)
         {
@@ -37,6 +43,18 @@ public class WorldArea : MonoBehaviour
                 field.ZCoord = j;
             }
         }
+        for (int i = 1; i < (int)areaSize.x - 1 ; i++)
+        {
+            for (int j = 1; j < (int)areaSize.y - 1; j++)
+            {
+                ghostSensor = ghostSensors[i, j] = Instantiate(ghostSensorPrefab, new Vector3(transform.position.x - i, 0, transform.position.z - j), Quaternion.identity);
+                ghostSensor.transform.parent = pacXon.transform;
+                ghostSensor.XCoord = i;
+                ghostSensor.ZCoord = j;
+                ghostSensor.SetParentConstraint(area[i,j].gameObject.transform);
+            }
+        }
+
         numberOfFields = ((int)areaSize.x -2) * ((int)areaSize.y - 2);
     }
     
@@ -132,7 +150,7 @@ public class WorldArea : MonoBehaviour
                 if (area[i, j].FType == Field.FieldType.path)
                 {
                     area[i, j].ChangeFieldType(Field.FieldType.player);
-                    pacXon.AddReward(0.1f);
+                    pacXon.AddReward(0.5f);
                     fieldsOwned++;
                 }
             }
@@ -147,7 +165,7 @@ public class WorldArea : MonoBehaviour
                 }
             }
         }
-        if (1.0f * fieldsOwned / numberOfFields >= pacXon.m_ResetParams.GetWithDefault("percent_needed", 0.2f))
+        if (1.0f * fieldsOwned / numberOfFields >= pacXon.m_ResetParams.GetWithDefault("percent_needed", 0.5f))
         {
             pacXon.AddReward(10f);
             pacXon.EndEpisode();
@@ -202,7 +220,7 @@ public class WorldArea : MonoBehaviour
                 if(area[i, j].Group == group)
                 {
                     area[i, j].ChangeFieldType(Field.FieldType.player);
-                    pacXon.AddReward(0.1f);
+                    pacXon.AddReward(0.5f);
                     fieldsOwned++;
                 }
             }
@@ -211,7 +229,7 @@ public class WorldArea : MonoBehaviour
 
     public void EndEpisode()
     {
-        pacXon.AddReward(-5f);
+        pacXon.AddReward(-10f);
         pacXon.EndEpisode();
     }
 

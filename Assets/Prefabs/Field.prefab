@@ -42,7 +42,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1, z: 0.8}
+  m_Size: {x: 0.1, y: 1, z: 1}
   m_Center: {x: 0.45, y: 0.5, z: 0}
 --- !u!1 &1024497533740313625
 GameObject:
@@ -247,7 +247,7 @@ MonoBehaviour:
   WestWall: {fileID: 2807274068208363361}
   EastWall: {fileID: 455693919760668075}
   walls: {fileID: 9009361198919764796}
-  infectionTime: 0.03
+  infectionTime: 0.01
   XCoord: 0
   ZCoord: 0
   hasGhost: 0
@@ -446,7 +446,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1, z: 0.8}
+  m_Size: {x: 0.1, y: 1, z: 1}
   m_Center: {x: 0.45, y: 0.5, z: 0}
 --- !u!1 &4625308877764672392
 GameObject:
@@ -534,7 +534,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1, z: 0.8}
+  m_Size: {x: 0.1, y: 1, z: 1}
   m_Center: {x: -0.45, y: 0.5, z: 0}
 --- !u!1 &7580736675065530392
 GameObject:
@@ -578,7 +578,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1, z: 0.8}
+  m_Size: {x: 0.1, y: 1, z: 1}
   m_Center: {x: 0.45, y: 0.5, z: 0}
 --- !u!1 &8316973809726141355
 GameObject:

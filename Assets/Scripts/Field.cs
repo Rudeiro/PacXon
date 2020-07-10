@@ -56,13 +56,14 @@ public class Field : MonoBehaviour
     private bool isDuringInfection;
     private float timeToInfect;
     private bool isInfected;
+    private WorldArea worldArea;
 
     public FieldType FType { get { return fType; } }
     public bool IsInfected { get { return isInfected; } }
    
     void Start()
     {
-        
+        worldArea = GetComponentInParent<WorldArea>();
     }
     
     void FixedUpdate()
@@ -105,6 +106,7 @@ public class Field : MonoBehaviour
 
     private void ChangeToPlayerField()
     {
+        worldArea = GetComponentInParent<WorldArea>();
         playerFieldCollider.enabled = true;
         emptyFieldCollider.enabled = false;
         ground.GetComponent<MeshRenderer>().material = playerFieldMat;
@@ -114,12 +116,14 @@ public class Field : MonoBehaviour
         isDuringInfection = false;
         isInfected = false;
         transform.gameObject.tag = "PlayerArea";
+        worldArea.GhostSensors[XCoord, ZCoord].gameObject.SetActive(false);
         //ActivateWalls(FieldType.player);
 
     }
 
     private void ChangeToPathField()
     {
+        worldArea = GetComponentInParent<WorldArea>();
         if (fType == FieldType.path)
         {
             GetComponentInParent<WorldArea>().EndEpisode();
@@ -133,7 +137,8 @@ public class Field : MonoBehaviour
             ActivateWalls(FieldType.path);
             pathFieldCollider.enabled = true;
             transform.gameObject.tag = "PathArea";
-            
+            worldArea.GhostSensors[XCoord, ZCoord].gameObject.SetActive(true);
+            worldArea.GhostSensors[XCoord, ZCoord].CheckSensorsToActivate();
         }
         
 
@@ -141,6 +146,7 @@ public class Field : MonoBehaviour
 
     private void ChangeToEmptyField()
     {
+        worldArea = GetComponentInParent<WorldArea>();
         ground.GetComponent<MeshRenderer>().material = emptyFieldMat;
         emptyFieldCollider.enabled = true;
         playerFieldCollider.enabled = false;
@@ -150,12 +156,14 @@ public class Field : MonoBehaviour
         isDuringInfection = false;
         isInfected = false;
         transform.gameObject.tag = "EmptyArea";
+        worldArea.GhostSensors[XCoord, ZCoord].gameObject.SetActive(false);
     }
 
     private void ChangeToBorderField()
     {
         borderCollider.enabled = true;
         emptyFieldCollider.enabled = false;
+        //worldArea.GhostSensors[XCoord, ZCoord].gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -184,9 +192,8 @@ public class Field : MonoBehaviour
 
     private void InfectNeighbours()
     {
-        WorldArea worldArea = GetComponentInParent<WorldArea>();
-
-        if(worldArea.Area[XCoord-1, ZCoord].FType == FieldType.path)
+        worldArea = GetComponentInParent<WorldArea>();
+        if (worldArea.Area[XCoord-1, ZCoord].FType == FieldType.path)
         {
             worldArea.Area[XCoord - 1, ZCoord].InfectPath(infectionTime);
         }
@@ -206,7 +213,7 @@ public class Field : MonoBehaviour
 
     public void ActivateWalls(FieldType type)
     {
-        WorldArea worldArea = GetComponentInParent<WorldArea>();
+        worldArea = GetComponentInParent<WorldArea>();
         NorthWall.enabled = true;
         SouthWall.enabled = true;
         WestWall.enabled = true;

@@ -151,6 +151,9 @@ public class PacXonAgent : Agent
         sensor.AddObservation(worldArea.Ghosts[0].transform.position);
         sensor.AddObservation(Vector3.Distance(worldArea.Ghosts[0].transform.position, transform.position));
         sensor.AddObservation(worldArea.Ghosts[0].moveDirection);
+        sensor.AddObservation(worldArea.Ghosts[1].transform.position);
+        sensor.AddObservation(Vector3.Distance(worldArea.Ghosts[1].transform.position, transform.position));
+        sensor.AddObservation(worldArea.Ghosts[1].moveDirection);
         sensor.AddObservation(worldArea.fieldsOwned);
         sensor.AddObservation(isDrawing);
         sensor.AddObservation(isPathInfected);

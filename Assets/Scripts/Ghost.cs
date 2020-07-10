@@ -13,7 +13,8 @@ public class Ghost : MonoBehaviour
     private void Start()
     {
         Physics.IgnoreLayerCollision(11, 9);
-        
+        Physics.IgnoreLayerCollision(11, 11);
+
     }
 
 
@@ -23,7 +24,7 @@ public class Ghost : MonoBehaviour
         float angle = Random.Range(0.0f, 2.0f);
         moveDirection.x = Mathf.Cos(angle * Mathf.PI);
         moveDirection.z = Mathf.Sin(angle * Mathf.PI);
-        while(moveDirection.x < 0.1 || moveDirection.z < 0.1)
+        while((moveDirection.x < 0.2  && moveDirection.x > -0.2) || (moveDirection.z < 0.2 && moveDirection.z > -0.2))
         {
             angle = Random.Range(0.0f, 2.0f);
             moveDirection.x = Mathf.Cos(angle * Mathf.PI);
