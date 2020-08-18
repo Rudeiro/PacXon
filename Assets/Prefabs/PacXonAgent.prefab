@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 277078191017478557}
   - component: {fileID: 3741150197079211591}
   - component: {fileID: 8549835551108631883}
+  - component: {fileID: 2932092046947722588}
   m_Layer: 13
   m_Name: PacXonAgent
   m_TagString: Untagged
@@ -111,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 11
+    VectorObservationSize: 28
     NumStackedVectorObservations: 3
     VectorActionSize: 05000000
     VectorActionDescriptions: []
@@ -140,6 +141,7 @@ MonoBehaviour:
   MaxStep: 5000
   moveSpeed: 5
   worldArea: {fileID: 0}
+  camera: {fileID: 0}
   isPathInfected: 0
 --- !u!54 &3741150197079211591
 Rigidbody:
@@ -182,11 +184,29 @@ MonoBehaviour:
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 8499
-  m_ObservationStacks: 1
+  m_ObservationStacks: 2
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0
   m_EndVerticalOffset: 0
+--- !u!114 &2932092046947722588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4236573473102306047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 282f342c2ab144bf38be65d4d0c4e07d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Camera: {fileID: 0}
+  m_SensorName: CameraSensor
+  m_Width: 180
+  m_Height: 140
+  m_Grayscale: 1
+  m_Compression: 1
 --- !u!1 &4768705003781610879
 GameObject:
   m_ObjectHideFlags: 0
