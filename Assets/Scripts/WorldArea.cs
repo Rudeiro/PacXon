@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WorldArea : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class WorldArea : MonoBehaviour
     Field fieldPrefab;
     [SerializeField]
     List<Ghost> ghosts;
+    [SerializeField]
+    TextMeshPro areaCoveredText;
     private Field[,] area;
     private bool[,] visited;
 
@@ -37,9 +40,14 @@ public class WorldArea : MonoBehaviour
                 field.ZCoord = j;
             }
         }
-        numberOfFields = ((int)areaSize.x -2) * ((int)areaSize.y - 2);
+        numberOfFields = ((int)areaSize.x -4) * ((int)areaSize.y - 4);
+        
     }
-    
+
+    private void FixedUpdate()
+    {
+        //areaCoveredText.text = (1.0f * fieldsOwned / numberOfFields).ToString("0.00");
+    }
     public void ResetWorldArea()
     {
         //setting borders
@@ -132,7 +140,7 @@ public class WorldArea : MonoBehaviour
                 if (area[i, j].FType == Field.FieldType.path)
                 {
                     area[i, j].ChangeFieldType(Field.FieldType.player);
-                    pacXon.AddReward(0.1f);
+                    //pacXon.AddReward(0.1f);
                     fieldsOwned++;
                 }
             }
@@ -147,9 +155,9 @@ public class WorldArea : MonoBehaviour
                 }
             }
         }
-        if (1.0f * fieldsOwned / numberOfFields >= pacXon.m_ResetParams.GetWithDefault("percent_needed", 0.2f))
+        if (1.0f * fieldsOwned / numberOfFields >= pacXon.m_ResetParams.GetWithDefault("percent_needed", 0.5f))
         {
-            pacXon.AddReward(10f);
+            pacXon.AddReward(1f);
             pacXon.EndEpisode();
         }
 
@@ -202,7 +210,7 @@ public class WorldArea : MonoBehaviour
                 if(area[i, j].Group == group)
                 {
                     area[i, j].ChangeFieldType(Field.FieldType.player);
-                    pacXon.AddReward(0.1f);
+                    //pacXon.AddReward(0.1f);
                     fieldsOwned++;
                 }
             }
@@ -211,7 +219,7 @@ public class WorldArea : MonoBehaviour
 
     public void EndEpisode()
     {
-        pacXon.AddReward(-5f);
+        pacXon.AddReward(-1f);
         pacXon.EndEpisode();
     }
 

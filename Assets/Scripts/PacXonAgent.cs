@@ -18,6 +18,8 @@ public class PacXonAgent : Agent
     float moveSpeed = 5;
     [SerializeField]
     WorldArea worldArea;
+
+    public Camera camera;
     
     new private Rigidbody rigidbody;
     private Vector2 areaSize;
@@ -114,44 +116,17 @@ public class PacXonAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-
-        //sensor.AddObservation(worldArea.targetsCount);
-        switch (moveDir)
-        {
-            case MoveDir.up:
-                sensor.AddObservation(0);
-                break;
-            case MoveDir.down:
-                sensor.AddObservation(1);
-                break;
-            case MoveDir.left:
-                sensor.AddObservation(2);
-                break;
-            case MoveDir.right:
-                sensor.AddObservation(3);
-                break;
-            default:
-                break;
-        }
-        switch (currentPosFieldType)
-        {
-            case Field.FieldType.empty:
-                sensor.AddObservation(0);
-                break;
-            case Field.FieldType.path:
-                sensor.AddObservation(1);
-                break;
-            case Field.FieldType.player:
-                sensor.AddObservation(2);
-                break;
-            default:
-                break;
-        }
+        sensor.AddOneHotObservation((int)moveDir, 4);
+        sensor.AddOneHotObservation((int)currentPosFieldType, 4);
+        
         sensor.AddObservation(transform.position);
         sensor.AddObservation(worldArea.Ghosts[0].transform.position);
         sensor.AddObservation(Vector3.Distance(worldArea.Ghosts[0].transform.position, transform.position));
         sensor.AddObservation(worldArea.Ghosts[0].moveDirection);
-        sensor.AddObservation(worldArea.fieldsOwned);
+        sensor.AddObservation(worldArea.Ghosts[1].transform.position);
+        sensor.AddObservation(Vector3.Distance(worldArea.Ghosts[1].transform.position, transform.position));
+        sensor.AddObservation(worldArea.Ghosts[1].moveDirection);
+        sensor.AddObservation(m_ResetParams.GetWithDefault("percent_needed", 0.5f) - 1.0f*worldArea.fieldsOwned/worldArea.numberOfFields);
         sensor.AddObservation(isDrawing);
         sensor.AddObservation(isPathInfected);
     }
@@ -254,6 +229,10 @@ public class PacXonAgent : Agent
 
     private void FixedUpdate()
     {
+        /*if(camera != null)
+        {
+            camera.Render();
+        }*/
         ChangePositionOverTime();
         currentPosFieldType = worldArea.Area[-((int)position.x - (int)globalPosition.x), -((int)position.z - (int)globalPosition.z)].FType;
         if (requestDecision)
